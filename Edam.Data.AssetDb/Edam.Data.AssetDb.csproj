@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Edam.Data.Assets\Edam.Data.Assets.csproj" />
+    <ProjectReference Include="..\Edam.Data.Schema\Edam.Data.Schema.csproj" />
+    <ProjectReference Include="..\Edam.Data.Templates\Edam.Data.Templates.csproj" />
+    <ProjectReference Include="..\Edam.Json\Edam.Json.csproj" />
+    <ProjectReference Include="..\Edam.Xml\Edam.Xml.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Edam.Common">
+      <HintPath>..\..\Edam.Common\Edam.Common\bin\Debug\net8.0\Edam.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Edam.Data.DataServices">
+      <HintPath>..\Edam.Data.DataServices\bin\Debug\net8.0\Edam.Data.DataServices.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

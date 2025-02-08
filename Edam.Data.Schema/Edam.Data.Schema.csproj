@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE; DEBUG_</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE; DEBUG_</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Edam.Data.Templates\Edam.Data.Templates.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Edam.Common">
+      <HintPath>..\..\Edam.Common\Edam.Common\bin\Debug\net8.0\Edam.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Edam.Data.Assets">
+      <HintPath>..\Edam.Data.Assets\bin\Debug\net8.0\Edam.Data.Assets.dll</HintPath>
+    </Reference>
+    <Reference Include="Edam.Data.ReferenceData">
+      <HintPath>..\Edam.Data.ReferenceData\bin\Debug\net8.0\Edam.Data.ReferenceData.dll</HintPath>
+    </Reference>
+    <Reference Include="Edam.Xml">
+      <HintPath>..\Edam.Xml\bin\Debug\net8.0\Edam.Xml.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

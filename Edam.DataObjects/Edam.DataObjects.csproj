@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="B2B\**" />
+    <EmbeddedResource Remove="B2B\**" />
+    <None Remove="B2B\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="sqlite-net-pcl" Version="1.8.0-beta" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Edam.Common">
+      <HintPath>..\..\Edam.Common\Edam.Common\bin\Debug\net8.0\Edam.Common.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

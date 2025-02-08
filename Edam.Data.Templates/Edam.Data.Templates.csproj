@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Edam.DataObjects</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Edam.Data.Assets\Edam.Data.Assets.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Edam.Common">
+      <HintPath>..\..\Edam.Common\Edam.Common\bin\Debug\net8.0\Edam.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Edam.Data.ReferenceData">
+      <HintPath>..\Edam.Data.ReferenceData\bin\Debug\net8.0\Edam.Data.ReferenceData.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
