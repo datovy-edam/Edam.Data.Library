@@ -14,7 +14,7 @@ using Edam.Data.AssetSchema;
 using Edam.Data.AssetManagement;
 using Edam.DataObjects.Models;
 using Edam.Data.Schema.DataDefinitionLanguage;
-using Edam.Data.Templates;
+using ObjAssets = Edam.DataObjects.Assets;
 using Edam.Data.Assets.AssetSchema;
 using reader = Edam.Text.StringReader;
 using System.Data.SqlTypes;
@@ -253,8 +253,15 @@ namespace Edam.Data.Schema.ImportExport
                item.TableName != previousAsset.originalTableName)
             {
                previousAsset.PrepareAdditionalColumns();
-               dasset.PrepareTableDefinition(item, item.TableName);
+               var tbl = dasset.PrepareTableDefinition(item, item.TableName);
                dasset.originalTableName = item.TableName;
+
+               // if ColumnName is null the description for the Table
+               if (item.ColumnName == null)
+               {
+                  tbl.Annotation.Clear();
+                  tbl.AddAnnotation(item.ColumnDescription);
+               }
 
                if (entityProperty != null)
                {
@@ -265,7 +272,7 @@ namespace Edam.Data.Schema.ImportExport
 
             // prepare/add table column definition
             var celement = dasset.PrepareColumnDefinition(item);
-            if (xproperty != null)
+            if (xproperty != null && celement != null)
             {
                DdlAsset.UpdateEntityProperty(xproperty, celement);
             }
@@ -409,6 +416,7 @@ namespace Edam.Data.Schema.ImportExport
       /// <returns>results log</returns>
       public IResultsLog ToAsset(AssetConsoleArgumentsInfo arguments)
       {
+         string func = "DataSchema::ImportReader::ToAsset";
          m_Arguments = arguments;
 
          IResultsLog resultsLog = new ResultLog();
@@ -421,12 +429,20 @@ namespace Edam.Data.Schema.ImportExport
 
          var uriList = UriResourceInfo.GetUriList(
            arguments.UriList, UriResourceType.xlsx);
+
+         if (uriList.Count <= 0)
+         {
+            ResultLog.Trace(
+               message: "No files to process found (check file extentions).", 
+               source: func, SeverityLevel.Info);
+         }
+
          foreach (var fname in uriList)
          {
             var docList = ExcelDocumentReader.ReadDocument(
                fname, "Documentation");
             AssetProperties doc = docList.Success ?
-               AssetProperties.GetInstance(docList.Instance) : 
+               AssetProperties.GetInstance(docList.Data) : 
                   new AssetProperties(
                      new List<ElementPropertyInfo>());
 
@@ -436,8 +452,8 @@ namespace Edam.Data.Schema.ImportExport
             if (results.Success)
             {
 
-               values.Header = results.Instance[0];
-               foreach (var list in results.Instance)
+               values.Header = results.Data[0];
+               foreach (var list in results.Data)
                {
                   // skip empty rows
                   if (ExcelDocumentReader.IsEmptyList(list))
@@ -470,6 +486,12 @@ namespace Edam.Data.Schema.ImportExport
                   }
                   arguments.AssetDataItems.AddRange(assets);
                }
+            }
+            else
+            {
+               ResultLog.Trace(
+                  message: "TAB (" + arguments.Domain.DomainId + ") not found.",
+                  source: func, SeverityLevel.Info);
             }
          }
          resultsLog.Succeeded();

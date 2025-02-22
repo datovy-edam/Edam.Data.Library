@@ -14,8 +14,10 @@ using Edam.Data.AssetSchema;
 using Edam.Data.AssetManagement;
 using Edam.DataObjects.Models;
 using Edam.Data.Schema.DataDefinitionLanguage;
+using ObjAssets = Edam.DataObjects.Assets;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Edam.Data.Assets.AssetSchema;
-using Edam.Data.Templates;
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 
 namespace Edam.Data.Schema.ImportExport
 {
@@ -106,8 +108,8 @@ namespace Edam.Data.Schema.ImportExport
          }
 
          List<MapInfo> maps = GetMaps(item);
-         PropertiesBag bag = (PropertiesBag)
-            (element.PropertiesBag ?? new PropertiesBag());
+         ObjAssets.PropertiesBag bag = (ObjAssets.PropertiesBag)
+            (element.PropertiesBag ?? new ObjAssets.PropertiesBag());
          if (bag.AssetTemplate == null)
          {
             bag.AssetTemplate = new ElementNodeInfo
@@ -247,8 +249,8 @@ namespace Edam.Data.Schema.ImportExport
          return ritem;
       }
 
-      public void PrepareTableDefinition(ImportItemInfo item,
-         string tableOriginalName)
+      public AssetElementInfo<IAssetElement> PrepareTableDefinition(
+         ImportItemInfo item, string tableOriginalName)
       {
          ImportItem = item;
          item.SchemaNamespace = ns;
@@ -271,6 +273,8 @@ namespace Edam.Data.Schema.ImportExport
          resourceCount++;
          Tables.Add(ritem);
          children = new List<AssetElementInfo<IAssetElement>>();
+
+         return ritem;
       }
 
       #endregion
@@ -421,6 +425,11 @@ namespace Edam.Data.Schema.ImportExport
       public AssetElementInfo<IAssetElement> PrepareColumnDefinition(
          ImportItemInfo item)
       {
+         if (item.ColumnName == null)
+         {
+            return null;
+         }
+
          item.TableName = item.TableName.Trim();
          item.ColumnName = item.ColumnName.Trim();
 
@@ -496,8 +505,11 @@ namespace Edam.Data.Schema.ImportExport
                   item.CharacterMaximumLength = maxLength.Value;
                }
                var element = PrepareColumnDefinition(item);
-               element.Description = eitem.Description;
-               element.Kind = eitem.Kind;
+               if (element != null)
+               {
+                  element.Description = eitem.Description;
+                  element.Kind = eitem.Kind;
+               }
             }
          }
       }
