@@ -12,9 +12,6 @@ using Edam.Application;
 using Edam.Diagnostics;
 using Edam.Data.AssetSchema;
 using Edam.Data.AssetManagement;
-using Edam.DataObjects.Models;
-using Edam.Data.Schema.DataDefinitionLanguage;
-using ObjAssets = Edam.DataObjects.Assets;
 using Edam.Data.Assets.AssetSchema;
 using reader = Edam.Text.StringReader;
 using System.Data.SqlTypes;
@@ -442,7 +439,7 @@ namespace Edam.Data.Schema.ImportExport
             var docList = ExcelDocumentReader.ReadDocument(
                fname, "Documentation");
             AssetProperties doc = docList.Success ?
-               AssetProperties.GetInstance(docList.Data) : 
+               AssetProperties.GetInstance(docList.Instance) : 
                   new AssetProperties(
                      new List<ElementPropertyInfo>());
 
@@ -452,8 +449,8 @@ namespace Edam.Data.Schema.ImportExport
             if (results.Success)
             {
 
-               values.Header = results.Data[0];
-               foreach (var list in results.Data)
+               values.Header = results.Instance[0];
+               foreach (var list in results.Instance)
                {
                   // skip empty rows
                   if (ExcelDocumentReader.IsEmptyList(list))

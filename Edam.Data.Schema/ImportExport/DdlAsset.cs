@@ -14,10 +14,8 @@ using Edam.Data.AssetSchema;
 using Edam.Data.AssetManagement;
 using Edam.DataObjects.Models;
 using Edam.Data.Schema.DataDefinitionLanguage;
-using ObjAssets = Edam.DataObjects.Assets;
-using DocumentFormat.OpenXml.Wordprocessing;
+using Edam.Data.Templates;
 using Edam.Data.Assets.AssetSchema;
-using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 
 namespace Edam.Data.Schema.ImportExport
 {
@@ -108,8 +106,8 @@ namespace Edam.Data.Schema.ImportExport
          }
 
          List<MapInfo> maps = GetMaps(item);
-         ObjAssets.PropertiesBag bag = (ObjAssets.PropertiesBag)
-            (element.PropertiesBag ?? new ObjAssets.PropertiesBag());
+         PropertiesBag bag = (PropertiesBag)
+            (element.PropertiesBag ?? new PropertiesBag());
          if (bag.AssetTemplate == null)
          {
             bag.AssetTemplate = new ElementNodeInfo
